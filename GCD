@@ -1,30 +1,40 @@
-long gcd(long a, long b) {
-
+long gcd (long a, long b) {
     long nod = 1L;
-
-    if (a > b) {
-        long tmp = a;
-        a = b;
+    long tmp;
+    if (a == 0L)
+        return b;
+    if (b == 0L)
+        return a;
+    if (a == b)
+        return a;
+    if (a == 1L || b == 1L)
+        return 1L;
+    while (a != 0 && b != 0) {
+        if (((a & 1L) | (b & 1L)) == 0L) {
+            nod <<= 1L;
+            a >>= 1L;
+            b >>= 1L;
+            continue;
+        }
+        if (((a & 1L) == 0L) && (b & 1L)) {
+            a >>= 1L;
+            continue;
+        }
+        if ((a & 1L) && ((b & 1L) == 0L)) {
+            b >>= 1L;
+            continue;
+        }
+        if (a > b) {
+            tmp = a;
+            a = b;
+            b = tmp;
+        }
+        tmp = a;
+        a = (b - a) >> 1L;
         b = tmp;
     }
-
-    while (a > 1L && b > 1L) {
-        for (long i = 2; i <= a; i++) {
-            if (a % i == 0 && b % i == 0) {
-                nod *= i;
-                a /= i;
-                b /= i;
-                break;
-            }
-            if (a % i == 0) {
-                a /= i;
-                break;
-            }
-            if (b % i == 0) {
-                b /= i;
-                break;
-            }
-        }
-    }
-    return nod;
-}
+    if (a == 0)
+        return nod * b;
+    else
+        return nod * a;
+} 
